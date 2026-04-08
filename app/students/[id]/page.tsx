@@ -204,7 +204,7 @@ export default function StudentDetails() {
                     <NumericInput
                       placeholder="Montant..."
                       className="w-full p-4 bg-white/10 border-none rounded-2xl text-sm font-bold outline-none"
-                      value={extraAmount === '' ? null : Number(extraAmount)}
+                      value={extraAmount === '' ? undefined : Number(extraAmount)}
                       onChange={(v)=>setExtraAmount(v === null ? '' : String(v))}
                       maximumFractionDigits={0}
                       required
@@ -293,7 +293,7 @@ export default function StudentDetails() {
                     <NumericInput
                       placeholder="Montant..."
                       className="p-4 bg-slate-50 rounded-2xl font-bold outline-none border-none"
-                      value={amount === '' ? null : Number(amount)}
+                      value={amount === '' ? undefined : Number(amount)}
                       onChange={(v)=>setAmount(v === null ? '' : String(v))}
                       maximumFractionDigits={0}
                       required
@@ -354,7 +354,7 @@ export default function StudentDetails() {
               </div>
               <NumericInput
                 className="w-full p-4 bg-slate-50 rounded-2xl font-black text-blue-600"
-                value={editForm.annual_fee ?? null}
+                value={editForm.annual_fee ?? undefined}
                 onChange={(v)=>setEditForm({...editForm, annual_fee: v ?? 0})}
                 maximumFractionDigits={0}
               />
