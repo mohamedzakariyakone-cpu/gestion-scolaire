@@ -1,0 +1,117 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #f0fdf4 100%);
+  background-attachment: fixed;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  position: relative;
+}
+
+/* Motifs éducatifs aux coins - plus visibles */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Coin supérieur gauche - motif livre/stylo */
+body::before {
+  background-image:
+    /* Stylo stylisé */
+    radial-gradient(circle at 20px 20px, rgba(34, 197, 94, 0.15) 2px, transparent 3px),
+    /* Lignes de cahier */
+    linear-gradient(rgba(34, 197, 94, 0.08) 1px, transparent 1px);
+  background-size: 60px 60px, 100% 25px;
+  background-position: 20px 20px, 0 0;
+  background-repeat: no-repeat, repeat;
+}
+
+/* Coin supérieur droit - motif graduation */
+body::after {
+  content: '';
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  background-image:
+    /* Chapeau de graduation stylisé */
+    conic-gradient(from 45deg, rgba(34, 197, 94, 0.12) 0deg, transparent 90deg, rgba(34, 197, 94, 0.08) 180deg, transparent 270deg);
+  background-size: 40px 40px;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Coin inférieur gauche - motif livre ouvert */
+body::before {
+  content: '';
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: 60px;
+  height: 80px;
+  background-image:
+    /* Pages de livre */
+    linear-gradient(90deg, rgba(34, 197, 94, 0.1) 2px, transparent 2px),
+    linear-gradient(rgba(34, 197, 94, 0.08) 1px, transparent 1px);
+  background-size: 15px 100%, 100% 20px;
+  background-position: 0 0, 0 0;
+  background-repeat: repeat-x, repeat;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Coin inférieur droit - motif crayon */
+body::after {
+  content: '';
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 70px;
+  height: 70px;
+  background-image:
+    /* Crayon stylisé */
+    linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0px, rgba(34, 197, 94, 0.15) 25px, transparent 25px);
+  background-size: 35px 35px;
+  background-repeat: no-repeat;
+  background-position: center;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Motifs de fond plus visibles sur toute la surface */
+body {
+  background-image:
+    /* Lignes horizontales subtiles */
+    linear-gradient(rgba(34, 197, 94, 0.04) 1px, transparent 1px),
+    /* Points très discrets */
+    radial-gradient(circle, rgba(34, 197, 94, 0.03) 1px, transparent 1px);
+  background-size: 100% 40px, 80px 80px;
+  background-attachment: fixed;
+}
