@@ -30,8 +30,8 @@ export default function Dashboard() {
       const { data: payments, error: paymentsError } = await supabase.from('payments').select('amount');
       if (paymentsError) throw paymentsError;
 
-      const expected = students?.reduce((acc, s) => acc + s.annual_fee, 0) || 0;
-      const collected = payments?.reduce((acc, p) => acc + p.amount, 0) || 0;
+      const expected = students?.reduce((acc: number, s: any) => acc + Number(s.annual_fee || 0), 0) || 0;
+      const collected = payments?.reduce((acc: number, p: any) => acc + Number(p.amount || 0), 0) || 0;
 
       setStats({
         totalStudents: students?.length || 0,

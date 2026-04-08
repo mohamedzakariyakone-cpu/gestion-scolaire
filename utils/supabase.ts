@@ -1,7 +1,33 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Initialisation paresseuse du client Supabase pour éviter les erreurs
+// d'importation pendant la pré-génération quand les variables d'environnement
+// ne sont pas disponibles. Le Proxy crée le client à la première utilisation.
+let _client: ReturnType<typeof createClient> | null = null;
 
-// C'est l'outil qui va nous permettre de parler à ta base de données Supabase
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+function ensureClient() {
+	if (_client) return _client;
+	const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+	const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+	if (!supabaseUrl || !supabaseAnonKey) {
+		throw new Error('Supabase env vars missing: NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY must be set');
+	}
+	_client = createClient(supabaseUrl, supabaseAnonKey);
+	return _client;
+}
+
+export const supabase: any = new Proxy(
+	{},
+	{
+		get(_, prop) {
+			const client = ensureClient();
+			// @ts-ignore
+			return client[prop];
+		},
+		apply(_, thisArg, args) {
+			const client = ensureClient();
+			// @ts-ignore
+			return (client as any).apply(thisArg, args);
+		},
+	}
+);

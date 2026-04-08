@@ -75,10 +75,10 @@ export default function FinancialForecastPage() {
       let totalScolariteReel = 0;
       let totalAvances = 0;
 
-      const studentsWithRates = stData.map((s) => {
+      const studentsWithRates = stData.map((s: any) => {
         const annualFee = parseAmount(s.annual_fee);
         const payArray = Array.isArray(s.payments) ? s.payments : [];
-        const totalPaye = payArray.reduce((sum, p) => sum + parseAmount(p.amount), 0);
+        const totalPaye = payArray.reduce((sum: number, p: any) => sum + parseAmount(p.amount), 0);
         const payeAnnee = Math.min(totalPaye, annualFee);
         const avance = Math.max(0, totalPaye - annualFee);
         const className = Array.isArray((s as any).classes) ? (s as any).classes[0]?.name : (s as any).classes?.name;
@@ -96,8 +96,8 @@ export default function FinancialForecastPage() {
         };
       });
 
-      const totalExtras = exData?.reduce((sum, item) => sum + parseAmount(item.amount_paid), 0) || 0;
-      const totalDepenses = dpData?.reduce((sum, item) => sum + parseAmount(item.amount), 0) || 0;
+      const totalExtras = exData?.reduce((sum: number, item: any) => sum + parseAmount(item.amount_paid), 0) || 0;
+      const totalDepenses = dpData?.reduce((sum: number, item: any) => sum + parseAmount(item.amount), 0) || 0;
 
       setTotals({
         ObjectifAnnuel: totalObj,
