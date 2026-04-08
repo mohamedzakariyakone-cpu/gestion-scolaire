@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { formatNumberForLocale, parseNumberFromString } from "../utils/formatNumber";
 
-type NumericInputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+type NumericInputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'value'> & {
   value?: number | null;
   onChange?: (value: number | null) => void;
   locale?: string;
