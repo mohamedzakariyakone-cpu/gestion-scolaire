@@ -403,7 +403,7 @@ export default function EngineScolaire() {
                 <option>compositin du mois d'aout</option>
                 <option>composition du mois de septembre</option>
                 <option>composition du mois d'octobre</option>
-                <option>composition du mois de </option>
+                <option>composition du mois de decembre </option>
               </select>
            </div>
 

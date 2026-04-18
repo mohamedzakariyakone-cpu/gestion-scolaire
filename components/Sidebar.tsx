@@ -18,6 +18,7 @@ const Sidebar = ({ mobile = false, onClose }: SidebarProps) => {
     { name: 'Professeurs', href: '/teachers', icon: GraduationCap },
     { name: 'Comptabilité', href: '/finance', icon: Wallet },
     {name : 'bulletins', href: '/bulletins', icon: NotebookTabs },
+    {name : 'performance', href: '/performance', icon: Notebook },
     { name: 'Paramètres', href: '/admin/settings', icon: Settings }// Ajouté ici pour la cohérence
     
     
