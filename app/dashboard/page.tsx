@@ -52,7 +52,7 @@ export default function Dashboard() {
   return (
     <div className="space-y-10">
       <div>
-        <h1 className="text-4xl font-black text-slate-900 tracking-tight">Tableau de Bord</h1>
+        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">Tableau de Bord</h1>
         <p className="text-slate-500 font-medium">Rapport global de l'établissement au {new Date().toLocaleDateString()}</p>
       </div>
 
@@ -64,7 +64,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 bg-white p-10 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col justify-between">
+        <div className="lg:col-span-2 bg-white p-6 md:p-10 rounded-[2.5rem] border border-slate-100 shadow-sm flex flex-col justify-between">
           <div className="flex justify-between items-start">
             <div>
               <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mb-2">Total Encaissé</p>
@@ -91,7 +91,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="bg-rose-500 p-10 rounded-[2.5rem] text-white shadow-xl shadow-rose-200 flex flex-col justify-between italic">
+        <div className="bg-rose-500 p-6 md:p-10 rounded-[2.5rem] text-white shadow-xl shadow-rose-200 flex flex-col justify-between italic">
           <div>
             <div className="h-14 w-14 bg-white/20 rounded-2xl flex items-center justify-center mb-6">
               <ArrowDownRight size={30} />
@@ -110,7 +110,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="bg-green-50 border border-green-100 p-6 rounded-3xl flex items-center gap-4">
+      <div className="bg-green-50 border border-green-100 p-4 md:p-6 rounded-3xl flex items-center gap-4">
         <div className="h-12 w-12 bg-green-600 text-white rounded-2xl flex items-center justify-center shadow-lg">
             <ArrowUpRight size={24} />
         </div>

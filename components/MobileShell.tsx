@@ -24,25 +24,19 @@ export default function MobileShell({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen w-full">
-      {/* Mobile header - hidden on login */}
+      {/* Floating FAB (mobile) - hidden on login */}
       {!isLogin && (
-        <header className="md:hidden flex items-center justify-between p-4 bg-white shadow-sm">
-          <button onClick={() => setOpen(true)} className="p-2 rounded-md bg-slate-100">
-            <Menu size={20} />
-          </button>
-          <div className="flex items-center gap-3">
-            <div className="text-lg font-black">Les Oursins</div>
-          </div>
-          <div />
-        </header>
+        <button onClick={() => setOpen(true)} className="md:hidden fixed z-40 right-4 bottom-6 w-14 h-14 rounded-full bg-green-600 text-white flex items-center justify-center shadow-xl hover:scale-105 transition-transform">
+          <Menu size={20} />
+        </button>
       )}
 
-      {/* Overlay sidebar for mobile */}
+      {/* Overlay mobile (floating bottom sheet) */}
       {open && (
-        <div className="fixed inset-0 z-50">
+        <div className="fixed inset-0 z-50" role="dialog" aria-modal="true">
           <div className="absolute inset-0 bg-black/40" onClick={() => setOpen(false)} />
-          <div className="absolute inset-y-0 left-0 w-72">
-            <Sidebar mobile onClose={() => setOpen(false)} />
+          <div className="absolute left-1/2 bottom-6 transform -translate-x-1/2 w-[92vw] max-w-[360px]">
+            <Sidebar floating onClose={() => setOpen(false)} />
           </div>
         </div>
       )}
@@ -51,7 +45,9 @@ export default function MobileShell({ children }: { children: React.ReactNode })
         {/* Desktop sidebar hidden on login */}
         {!isLogin && <Sidebar />}
         <main className={`flex-1 ${!isLogin ? 'md:ml-72' : ''} p-4 md:p-10`}>
-          {children}
+          <div className="app-container">
+            {children}
+          </div>
         </main>
       </div>
     </div>

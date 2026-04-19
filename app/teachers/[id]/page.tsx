@@ -60,8 +60,8 @@ export default function TeacherProfilePage() {
         <ArrowLeft size={16} /> Retour au personnel
       </Link>
 
-      {/* --- HEADER PREMIUM --- */}
-      <div className="bg-slate-950 rounded-[3.5rem] p-10 text-white relative overflow-hidden shadow-2xl">
+    {/* --- HEADER PREMIUM --- */}
+    <div className="bg-slate-950 rounded-[3.5rem] p-6 md:p-10 text-white relative overflow-hidden shadow-2xl">
         <div className="absolute -right-20 -top-20 w-80 h-80 bg-green-600/20 blur-[120px] rounded-full" />
         <div className="flex flex-col md:flex-row items-center gap-10 relative z-10">
             <div className="h-36 w-36 bg-gradient-to-br from-white/20 to-white/5 rounded-[3rem] border border-white/10 flex items-center justify-center text-6xl font-black italic shadow-2xl">
@@ -70,7 +70,7 @@ export default function TeacherProfilePage() {
             <div className="flex-1 text-center md:text-left space-y-4">
                 <div className="space-y-2">
                     <span className="bg-green-600 px-5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest italic">{teacher.status}</span>
-                    <h1 className="text-6xl font-black tracking-tighter italic uppercase leading-none">
+                    <h1 className="text-3xl sm:text-6xl font-black tracking-tighter italic uppercase leading-none">
                         {teacher.first_name} <span className="text-green-500">{teacher.last_name}</span>
                     </h1>
                 </div>
@@ -87,28 +87,28 @@ export default function TeacherProfilePage() {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           
           {/* CARTE : SALAIRE */}
-          <div onClick={() => { setActiveModal('salary'); setInputValue(teacher.salary || ''); }} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group">
+          <div onClick={() => { setActiveModal('salary'); setInputValue(teacher.salary || ''); }} className="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group">
               <div className="h-12 w-12 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Banknote size={24}/></div>
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Rémunération</p>
               <h4 className="text-2xl font-black text-slate-900">{teacher.salary ? `${teacher.salary} FCFA` : 'À définir'}</h4>
           </div>
 
           {/* CARTE : HEURES SEMAINE */}
-          <div onClick={() => { setActiveModal('hours'); setInputValue(teacher.weekly_hours?.toString() || '0'); }} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group">
+          <div onClick={() => { setActiveModal('hours'); setInputValue(teacher.weekly_hours?.toString() || '0'); }} className="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group">
               <div className="h-12 w-12 bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Clock size={24}/></div>
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Charge Horaire</p>
               <h4 className="text-2xl font-black text-slate-900">{teacher.weekly_hours || 0} H / Semaine</h4>
           </div>
 
           {/* CARTE : CLASSES */}
-          <div onClick={() => { setActiveModal('classes'); setInputValue(teacher.assigned_classes || ''); }} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group">
+          <div onClick={() => { setActiveModal('classes'); setInputValue(teacher.assigned_classes || ''); }} className="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group">
               <div className="h-12 w-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Layers size={24}/></div>
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Groupes Assignés</p>
               <h4 className="text-2xl font-black text-slate-900 truncate">{teacher.assigned_classes || 'Aucun'}</h4>
           </div>
 
           {/* CARTE : DISPONIBILITÉ */}
-          <div onClick={() => { setActiveModal('availability'); setInputValue(teacher.availability || ''); }} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group">
+          <div onClick={() => { setActiveModal('availability'); setInputValue(teacher.availability || ''); }} className="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group">
               <div className="h-12 w-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Calendar size={24}/></div>
               <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Disponibilité</p>
               <h4 className="text-xl font-black text-slate-900 truncate">{teacher.availability || 'À définir'}</h4>
@@ -117,7 +117,7 @@ export default function TeacherProfilePage() {
 
       {/* --- SECTION INFOS SECONDAIRES --- */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-white p-10 rounded-[3rem] border border-slate-100 min-h-[300px]">
+          <div className="lg:col-span-2 bg-white p-6 md:p-10 rounded-[3rem] border border-slate-100 min-h-[300px]">
               <div className="flex justify-between items-center mb-8 italic">
                   <h3 className="text-xl font-black text-slate-900 flex items-center gap-2"><FileBadge size={20} className="text-green-600"/> Dossier Professionnel</h3>
                   <button className="text-[10px] font-black uppercase text-green-600 px-4 py-2 bg-green-50 rounded-full">Ajouter un document</button>
@@ -134,7 +134,7 @@ export default function TeacherProfilePage() {
               </div>
           </div>
 
-          <div className="bg-slate-900 p-10 rounded-[3rem] text-white space-y-6">
+          <div className="bg-slate-900 p-6 md:p-10 rounded-[3rem] text-white space-y-6">
               <h3 className="text-sm font-black uppercase tracking-widest text-slate-500 italic">Actions Système</h3>
               <div className="space-y-3">
                   <button className="w-full p-4 bg-white/5 hover:bg-white/10 rounded-2xl flex items-center justify-between transition-all group">

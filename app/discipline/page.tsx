@@ -60,7 +60,7 @@ export default function DisciplinePage() {
       {/* HEADER */}
       <div className="flex items-center justify-between border-b border-slate-200 pb-8">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+          <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight flex items-center gap-3">
             <ShieldAlert size={36} className="text-orange-500" /> Gestion de la Conduite
           </h1>
           <p className="text-slate-500 font-medium mt-2">Suivi disciplinaire et rapports d'incidents en temps réel.</p>
@@ -70,7 +70,7 @@ export default function DisciplinePage() {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-10">
         
         {/* FORMULAIRE (Surveillant) */}
-        <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm h-fit sticky top-10">
+        <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-slate-100 shadow-sm h-fit xl:sticky top-10">
           <h2 className="text-xl font-bold mb-6 text-slate-900 flex items-center gap-2">
             <PlusCircle size={20} className="text-green-600" /> Signaler un incident
           </h2>

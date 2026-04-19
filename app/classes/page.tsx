@@ -71,7 +71,7 @@ export default function ClassesPage() {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-10 items-start">
         
         {/* Formulaire d'ajout (Col 1) */}
-        <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 xl:col-span-1 sticky top-10">
+        <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100 xl:col-span-1 xl:sticky top-10">
           <h2 className="text-xl font-bold mb-1 text-slate-950">Nouvelle Classe</h2>
           <p className="text-sm text-slate-500 mb-6">Enregistrez une section d'enseignement.</p>
           
@@ -129,7 +129,7 @@ export default function ClassesPage() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {classes.map((cls) => (
-                    <div key={cls.id} className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col group hover:border-green-500 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
+                    <div key={cls.id} className="bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col group hover:border-green-500 hover:shadow-xl transition-all duration-300 relative overflow-hidden">
                         
                         {/* Bouton de suppression discret en haut à droite */}
                         <button 

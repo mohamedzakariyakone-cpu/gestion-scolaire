@@ -85,26 +85,26 @@ export default function GlobalSettingsPage() {
       {/* HEADER DYNAMIQUE */}
       <div className="mt-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-            <h1 className="text-5xl font-black italic uppercase tracking-tighter text-slate-900">
-                Cockpit <span className="text-green-600">Système</span>
+            <h1 className="text-3xl sm:text-5xl font-black italic uppercase tracking-tighter text-slate-900">
+              Cockpit <span className="text-green-600">Système</span>
             </h1>
             <p className="text-slate-400 font-bold italic uppercase text-[10px] tracking-widest mt-2">
               Configuration active : {config.school_name} | {config.current_academic_year}
             </p>
         </div>
         <button 
-            onClick={saveSettings} disabled={saving}
-            className="bg-slate-900 text-white px-10 py-5 rounded-[2rem] font-black uppercase italic flex items-center gap-3 hover:bg-green-600 transition-all shadow-2xl active:scale-95 disabled:opacity-50"
+          onClick={saveSettings} disabled={saving}
+          className="bg-slate-900 text-white px-6 sm:px-10 py-3 sm:py-5 rounded-[2rem] font-black uppercase italic flex items-center gap-3 hover:bg-green-600 transition-all shadow-2xl active:scale-95 disabled:opacity-50 w-full sm:w-auto justify-center"
         >
-            {saving ? <Loader2 className="animate-spin" size={20}/> : <Save size={20} />}
-            Appliquer les changements
+          {saving ? <Loader2 className="animate-spin" size={20}/> : <Save size={20} />}
+          Appliquer les changements
         </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         {/* SECTION : IDENTITÉ ÉCOLE */}
-        <div className="lg:col-span-4 bg-white p-8 rounded-[3.5rem] border border-slate-100 shadow-sm space-y-6">
+        <div className="lg:col-span-4 bg-white p-6 md:p-8 rounded-[3.5rem] border border-slate-100 shadow-sm space-y-6">
             <div className="flex items-center gap-3 border-b pb-4">
                 <Store className="text-blue-600" size={20} />
                 <h3 className="font-black uppercase italic text-sm text-slate-800">Établissement</h3>
@@ -128,15 +128,15 @@ export default function GlobalSettingsPage() {
         </div>
 
         {/* SECTION : ÉCHÉANCIER DES TRANCHES */}
-        <div className="lg:col-span-8 bg-white p-10 rounded-[3.5rem] border border-slate-100 shadow-sm space-y-8">
+        <div className="lg:col-span-8 bg-white p-6 md:p-10 rounded-[3.5rem] border border-slate-100 shadow-sm space-y-8">
             <div className="flex items-center gap-3 border-b pb-6">
                 <Clock className="text-green-600" />
                 <h3 className="font-black uppercase italic text-lg text-slate-800">Calendrier des Tranches (Plan 3)</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {[1, 2, 3].map((num) => (
-                    <div key={num} className="space-y-4 p-6 bg-slate-50 rounded-[2.5rem] border border-slate-100">
+              {[1, 2, 3].map((num) => (
+                <div key={num} className="space-y-4 p-4 sm:p-6 bg-slate-50 rounded-[2.5rem] border border-slate-100">
                         <p className="font-black text-center text-green-600 uppercase text-[10px]">Tranche {num}</p>
                         <div className="space-y-3">
                             <select 

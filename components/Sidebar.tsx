@@ -1,14 +1,14 @@
-'use client'; 
+'use client';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'; 
-import { LayoutDashboard, School, Users, GraduationCap, Wallet, Settings, LogOut, Notebook, NotebookTabs ,  } from 'lucide-react';
-import { Graduate, Grandstander } from 'next/font/google';
-import { report } from 'process';
+import { LayoutDashboard, School, Users, GraduationCap, Wallet, Settings, LogOut, Notebook, NotebookTabs, X, Ruler, ChartLine } from 'lucide-react';
+import { GraphHelpers } from 'next/dist/compiled/webpack/webpack';
+import { scale } from 'pdf-lib';
 
-type SidebarProps = { mobile?: boolean, onClose?: () => void };
+type SidebarProps = { mobile?: boolean; floating?: boolean; onClose?: () => void };
 
-const Sidebar = ({ mobile = false, onClose }: SidebarProps) => {
+const Sidebar = ({ mobile = false, floating = false, onClose }: SidebarProps) => {
   const pathname = usePathname(); 
 
   const menuItems = [
@@ -17,41 +17,46 @@ const Sidebar = ({ mobile = false, onClose }: SidebarProps) => {
     { name: 'Élèves', href: '/students', icon: Users },
     { name: 'Professeurs', href: '/teachers', icon: GraduationCap },
     { name: 'Comptabilité', href: '/finance', icon: Wallet },
-    {name : 'bulletins', href: '/bulletins', icon: NotebookTabs },
-    {name : 'performance', href: '/performance', icon: Notebook },
-    { name: 'Paramètres', href: '/admin/settings', icon: Settings }// Ajouté ici pour la cohérence
-    
-    
+    { name: 'Bulletins', href: '/bulletins', icon: NotebookTabs },
+    { name: 'Performance', href: '/performance', icon: ChartLine },
+    { name: 'Paramètres', href: '/admin/settings', icon: Settings }
   ];
 
-  const base = mobile
-    ? 'fixed inset-y-0 left-0 w-72 bg-gradient-to-b from-green-100 via-green-50 to-white backdrop-blur-xl text-gray-800 p-6 flex flex-col border-r border-green-200 shadow-2xl z-50 transform transition-transform'
-    : 'hidden md:flex w-72 h-screen bg-gradient-to-b from-green-100 via-green-50 to-white backdrop-blur-xl text-gray-800 fixed left-0 top-0 p-8 flex flex-col border-r border-green-200 shadow-2xl shadow-green-100/50 z-50 rounded-r-[3rem]';
+  let base = '';
+  if (floating) {
+    base = 'fixed left-1/2 bottom-6 transform -translate-x-1/2 w-[92vw] max-w-[360px] bg-white text-gray-800 p-4 rounded-3xl shadow-2xl z-50 overflow-hidden';
+  } else if (mobile) {
+    // Changement : On réduit le padding et on s'assure que le overflow-y-auto fonctionne bien
+    base = 'fixed inset-y-0 left-0 w-[85vw] max-w-[320px] bg-gradient-to-b from-green-50 to-white text-gray-800 p-5 flex flex-col border-r border-green-200 shadow-2xl z-50 transform transition-transform overflow-y-auto';
+  } else {
+    base = 'hidden md:flex w-72 h-screen bg-gradient-to-b from-green-50 to-white text-gray-800 fixed left-0 top-0 p-8 flex flex-col border-r border-green-200 z-50 rounded-r-[1.5rem] overflow-y-auto';
+  }
 
   return (
-    <div className={base}>
-      {mobile && (
-        <div className="flex items-center justify-between mb-4">
-          <div className="h-10 w-10 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-xl text-white font-black">O</div>
-          <button onClick={onClose} className="text-slate-600 p-2 rounded-md bg-white/50">Fermer</button>
+    <div className={base} role="navigation" aria-label="Sidebar">
+      {/* HEADER : Réduit sur mobile pour gagner de la place */}
+      <div className={`flex items-center justify-between ${mobile ? 'mb-6' : 'mb-12'}`}>
+        <div className="flex items-center gap-3 px-1">
+          <div className="h-10 w-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/20">
+            <span className="font-black text-xl text-white">O</span>
+          </div>
+          <div>
+            <h1 className="text-xl font-black tracking-tight text-gray-900 leading-tight">
+              Les<span className="text-green-600"> Oursins</span>
+            </h1>
+            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Admin</p>
+          </div>
         </div>
-      )}
-      
-      {/* Logo & Header */}
-      <div className="mb-16 flex items-center gap-4 px-3">
-        <div className="h-12 w-12 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-xl shadow-green-500/30 ring-2 ring-green-500/20">
-          <span className="font-black text-2xl text-white">O</span>
-        </div>
-        <div>
-          <h1 className="text-2xl font-black tracking-tight text-gray-900 leading-tight whitespace-nowrap">
-            Les<span className="text-transparent bg-gradient-to-r from-green-500 to-green-600 bg-clip-text"> Oursins</span>
-          </h1>
-          <p className="text-xs text-gray-600 font-semibold tracking-wider">administrateur</p>
-        </div>
+
+        {mobile && onClose && (
+          <button onClick={onClose} className="p-2 rounded-xl bg-gray-100 text-slate-600">
+            <X size={18} />
+          </button>
+        )}
       </div>
       
-      {/* Navigation Principale */}
-      <nav className="space-y-3 flex-1">
+      {/* NAVIGATION : On réduit l'espacement entre les items (space-y-1 au lieu de 3) */}
+      <nav className="space-y-1.5 flex-1">
         {menuItems.map((item) => {
           const isActive = pathname === item.href;
           
@@ -59,37 +64,30 @@ const Sidebar = ({ mobile = false, onClose }: SidebarProps) => {
             <Link 
               key={item.name} 
               href={item.href}
-              className={`group relative flex items-center gap-4 px-5 py-4 rounded-2xl transition-all duration-300 font-semibold text-sm overflow-hidden
+              className={`group flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 font-bold text-sm
                 ${isActive 
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg shadow-green-500/30 scale-105' 
-                  : 'text-gray-600 hover:bg-gradient-to-r hover:from-green-200 hover:to-green-100 hover:text-gray-800 hover:shadow-md hover:shadow-green-200/20 hover:scale-102'
+                  ? 'bg-green-500 text-white shadow-md shadow-green-200' 
+                  : 'text-gray-600 hover:bg-green-50 hover:text-green-700'
                 }`}
+              onClick={() => onClose?.()}
             >
-              {isActive && (
-                <div className="absolute inset-0 bg-gradient-to-r from-green-400/20 to-green-500/20 rounded-2xl animate-pulse"></div>
-              )}
-              
-              <item.icon size={22} className={`relative z-10 transition-all duration-300 ${isActive ? 'text-white' : 'text-gray-500 group-hover:text-green-500 group-hover:scale-110'}`} />
-              <span className="relative z-10">{item.name}</span>
+              <item.icon size={20} className={isActive ? 'text-white' : 'text-gray-400 group-hover:text-green-500'} />
+              <span>{item.name}</span>
               
               {isActive && (
-                <div className="relative z-10 ml-auto flex items-center gap-1">
-                  <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                  <div className="w-1 h-1 bg-white/60 rounded-full"></div>
-                </div>
+                <div className="ml-auto w-1.5 h-1.5 bg-white rounded-full"></div>
               )}
             </Link>
           );
         })}
       </nav>
 
-      {/* Section Bas */}
-      <div className="border-t border-green-300/50 pt-8 mt-8 space-y-3">
-          {/* Version simplifiée en bas si nécessaire, sinon on peut le supprimer car il est déjà dans menuItems */}
-          <button className="w-full group flex items-center gap-4 px-5 py-4 rounded-2xl text-red-500 hover:bg-gradient-to-r hover:from-red-100 hover:to-red-50 hover:text-red-600 text-sm font-semibold transition-all duration-300 hover:scale-102">
-            <LogOut size={22} className="group-hover:scale-110 transition-all duration-300" />
-            <span>Déconnexion</span>
-          </button>
+      {/* SECTION BAS : Réduite pour ne pas être coupée */}
+      <div className="border-t border-gray-100 pt-4 mt-4">
+        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-sm font-bold transition-all">
+          <LogOut size={20} />
+          <span>Déconnexion</span>
+        </button>
       </div>
     </div>
   );

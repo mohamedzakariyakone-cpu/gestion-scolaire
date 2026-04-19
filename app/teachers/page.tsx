@@ -91,7 +91,7 @@ export default function TeachersPage() {
             <span className="h-2 w-2 bg-green-600 rounded-full" />
             <p className="text-[10px] font-black uppercase tracking-[0.2em] text-green-600">Administration</p>
           </div>
-          <h1 className="text-5xl font-black tracking-tighter text-slate-950 italic">
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-slate-950 italic">
             Corps Enseignant
           </h1>
         </div>
@@ -102,7 +102,7 @@ export default function TeachersPage() {
       </div>
 
       {/* --- FORMULAIRE (Design "Fiche Élève") --- */}
-      <div className="bg-white p-8 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/50">
+      <div className="bg-white p-6 md:p-8 rounded-[3rem] border border-slate-100 shadow-2xl shadow-slate-200/50">
         <div className="flex items-center gap-3 mb-8">
             <div className="p-2 bg-slate-950 rounded-xl text-white shadow-lg">
                 <UserPlus size={20} />
@@ -165,8 +165,8 @@ export default function TeachersPage() {
         <div className="flex justify-center p-20"><Loader2 className="animate-spin text-green-600" size={40} /></div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredTeachers.map((teacher) => (
-            <div key={teacher.id} className="group bg-white p-8 rounded-[3.5rem] border border-slate-50 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
+            {filteredTeachers.map((teacher) => (
+            <div key={teacher.id} className="group bg-white p-6 md:p-8 rounded-[3.5rem] border border-slate-50 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
               <div className="flex justify-between items-start mb-6">
                 <div className="h-16 w-16 bg-slate-900 rounded-2xl flex items-center justify-center text-white font-black text-xl group-hover:bg-green-600 transition-colors">
                   {teacher.first_name[0]}{teacher.last_name[0]}
