@@ -144,7 +144,7 @@ export default function CFODashboardUltraResponsive() {
       const fee = Number(s.annual_fee) || 0;
       const pays = s.payments || [];
       const totalPaid = pays.reduce((sum: number, p: Payment) => sum + (Number(p.amount) || 0), 0);
-      const className = Array.isArray(s.classes) ? s.classes[0]?.name : s.classes?.name || "Sans Classe";
+      const className = Array.isArray(s.classes) ? (s.classes[0]?.name || "Sans Classe") : (s.classes?.name || "Sans Classe");
       
       totalPotential += fee;
       collected += Math.min(totalPaid, fee);
