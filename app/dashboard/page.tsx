@@ -60,7 +60,7 @@ export default function Dashboard() {
         <StatCard title="Élèves Inscrits" value={stats.totalStudents} icon={<Users />} color="bg-green-600" />
         <StatCard title="Classes" value={stats.totalClasses} icon={<School />} color="bg-indigo-600" />
         <StatCard title="Taux de Recouvrement" value={`${recoveryRate}%`} icon={<TrendingUp />} color="bg-emerald-500" />
-        <StatCard title="Mois en cours" value="Mars" icon={<Clock />} color="bg-orange-500" />
+        <StatCard title="Mois en cours" value="Mai" icon={<Clock />} color="bg-orange-500" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
