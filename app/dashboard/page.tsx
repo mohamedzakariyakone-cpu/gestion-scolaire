@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, cloneElement } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/utils/supabase';
 import { 
   Users, School, TrendingUp, Clock, 
@@ -78,7 +78,7 @@ interface EnrichedIncident {
 interface StatCardProps {
   title: string;
   value: string | number;
-  icon: React.ReactElement;
+  icon: React.ReactNode;
   color: string;
 }
 
@@ -424,7 +424,9 @@ function StatCard({ title, value, icon, color }: StatCardProps) {
   return (
     <div className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm flex items-center gap-4 transition-all">
       <div className={`h-11 w-11 sm:h-12 sm:w-12 ${color} text-white rounded-xl flex items-center justify-center shadow-md shrink-0`}>
-        {cloneElement(icon, { className: "w-5 h-5" })}
+        <div className="w-5 h-5">
+          {icon}
+        </div>
       </div>
       <div className="min-w-0">
         <p className="text-slate-400 text-[10px] sm:text-xs font-bold uppercase tracking-wider truncate">{title}</p>
