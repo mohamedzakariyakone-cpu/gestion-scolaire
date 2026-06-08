@@ -2,7 +2,6 @@
 
 import { useState, useEffect, cloneElement } from 'react';
 import { supabase } from '@/utils/supabase';
-
 import { 
   Users, School, TrendingUp, Clock, 
   ArrowUpRight, ArrowDownRight, Banknote, 
@@ -10,7 +9,6 @@ import {
 } from 'lucide-react';
 
 export default function Dashboard() {
-  const { selectedYearId } = useYear();
   const [stats, setStats] = useState({
     totalStudents: 0,
     totalClasses: 0,
@@ -29,10 +27,8 @@ export default function Dashboard() {
   const formattedMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
 
   useEffect(() => {
-    if (selectedYearId) {
-      fetchDashboardData();
-    }
-  }, [selectedYearId]);
+    fetchDashboardData();
+  }, []);
 
   const fetchDashboardData = async () => {
     setLoading(true);
@@ -40,44 +36,38 @@ export default function Dashboard() {
       // 1. Récupération des élèves
       const { data: students, error: studentsError } = await supabase
         .from('students')
-        .select('id, first_name, last_name, scolarite_totale, scolarite_payee, class_id')
-        .eq('academic_year_id', selectedYearId);
+        .select('id, first_name, last_name, scolarite_totale, scolarite_payee, class_id');
       if (studentsError) throw studentsError;
 
       // 2. Récupération des classes
       const { data: classes, error: classesError } = await supabase
         .from('classes')
-        .select('id, name')
-        .eq('academic_year_id', selectedYearId);
+        .select('id, name');
       if (classesError) throw classesError;
 
       // 3. Récupération des enseignants
       const { count: teacherCount } = await supabase
         .from('teachers')
-        .select('*', { count: 'exact', head: true })
-        .eq('academic_year_id', selectedYearId);
+        .select('*', { count: 'exact', head: true });
 
       // 4. Récupération des paiements
       const { data: payments, error: paymentsError } = await supabase
         .from('payments')
         .select('id, amount, created_at, student_id')
-        .eq('academic_year_id', selectedYearId)
         .order('created_at', { ascending: false });
       if (paymentsError) throw paymentsError;
 
       // 5. Récupération des dépenses
       const { data: expenses } = await supabase
         .from('expenses')
-        .select('amount')
-        .eq('academic_year_id', selectedYearId);
+        .select('amount');
 
-      // 6. CORRECTION : Utilisation de .range(0, 2) au lieu de .slice(0, 3) pour limiter à 3 incidents
+      // 6. Récupération des incidents disciplinaires
       const { data: discipline } = await supabase
         .from('discipline')
         .select('id, reason, severity, incident_date, student_id')
-        .eq('academic_year_id', selectedYearId)
         .order('incident_date', { ascending: false })
-        .range(0, 2); 
+        .range(0, 2);
 
       // --- TRAITEMENT DES MAPS EN MÉMOIRE ---
       const classMap: Record<string, string> = {};
@@ -96,7 +86,7 @@ export default function Dashboard() {
       const collected = students?.reduce((acc: number, s: any) => acc + Number(s.scolarite_payee || 0), 0) || 0;
       const totalExp = expenses?.reduce((acc: number, e: any) => acc + Number(e.amount || 0), 0) || 0;
 
-      // Top 4 des impayés critiques (Traitement sur le tableau JS clean avec slice)
+      // Top 4 des impayés critiques
       const debtors = (students || [])
         .map((s: any) => {
           const debt = Number(s.scolarite_totale || 0) - Number(s.scolarite_payee || 0);
@@ -117,7 +107,7 @@ export default function Dashboard() {
         return { name: c.name, count };
       });
 
-      // Formatage historique des flux récents (Sécurisé sur l'array JS résultant)
+      // Formatage des flux récents
       const enrichedPayments = (payments || []).slice(0, 4).map((p: any) => ({
         id: p.id,
         amount: p.amount,
@@ -149,7 +139,7 @@ export default function Dashboard() {
       setRecentIncidents(enrichedIncidents);
 
     } catch (error) {
-      console.error('Erreur lors du chargement du dashboard complet:', error);
+      console.error('Erreur lors du chargement du dashboard:', error);
     } finally {
       setLoading(false);
     }
@@ -332,7 +322,7 @@ export default function Dashboard() {
           <Activity className="w-5 h-5 text-indigo-600" />
           <div>
             <h3 className="font-black text-slate-950 text-base sm:text-lg">Cartographie des Effectifs</h3>
-            <p className="text-slate-400 text-xs font-medium">Nombre d'étudiants enregistrés par section sur cette année</p>
+            <p className="text-slate-400 text-xs font-medium">Nombre d'étudiants enregistrés par section</p>
           </div>
         </div>
 
