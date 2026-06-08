@@ -2,7 +2,7 @@
 
 import { useState, useEffect, cloneElement } from 'react';
 import { supabase } from '@/utils/supabase';
-import { useYear } from '@/context/YearContext';
+
 import { 
   Users, School, TrendingUp, Clock, 
   ArrowUpRight, ArrowDownRight, Banknote, 
