@@ -8,6 +8,80 @@ import {
   AlertTriangle, Calendar, UserCheck, ShieldAlert, Activity
 } from 'lucide-react';
 
+// Types
+interface Student {
+  id: string;
+  first_name: string;
+  last_name: string;
+  scolarite_totale: number;
+  scolarite_payee: number;
+  class_id: string;
+}
+
+interface Class {
+  id: string;
+  name: string;
+}
+
+interface Payment {
+  id: string;
+  amount: number;
+  created_at: string;
+  student_id: string;
+}
+
+interface Expense {
+  amount: number;
+}
+
+interface DisciplineRecord {
+  id: string;
+  reason: string;
+  severity: string;
+  incident_date: string;
+  student_id: string;
+}
+
+interface StudentInfo {
+  fullName: string;
+  className: string;
+}
+
+interface Debtor {
+  id: string;
+  name: string;
+  className: string;
+  debt: number;
+}
+
+interface ClassDistribution {
+  name: string;
+  count: number;
+}
+
+interface EnrichedPayment {
+  id: string;
+  amount: number;
+  created_at: string;
+  studentName: string;
+  className: string;
+}
+
+interface EnrichedIncident {
+  id: string;
+  reason: string;
+  severity: string;
+  date: string;
+  studentName: string;
+}
+
+interface StatCardProps {
+  title: string;
+  value: string | number;
+  icon: React.ReactElement;
+  color: string;
+}
+
 export default function Dashboard() {
   const [stats, setStats] = useState({
     totalStudents: 0,
@@ -17,10 +91,10 @@ export default function Dashboard() {
     totalExpected: 0,
     totalExpenses: 0,
   });
-  const [recentPayments, setRecentPayments] = useState<any[]>([]);
-  const [criticalDebtors, setCriticalDebtors] = useState<any[]>([]);
-  const [classDistribution, setClassDistribution] = useState<any[]>([]);
-  const [recentIncidents, setRecentIncidents] = useState<any[]>([]);
+  const [recentPayments, setRecentPayments] = useState<EnrichedPayment[]>([]);
+  const [criticalDebtors, setCriticalDebtors] = useState<Debtor[]>([]);
+  const [classDistribution, setClassDistribution] = useState<ClassDistribution[]>([]);
+  const [recentIncidents, setRecentIncidents] = useState<EnrichedIncident[]>([]);
   const [loading, setLoading] = useState(true);
 
   const currentMonth = new Date().toLocaleDateString('fr-FR', { month: 'long' });
@@ -71,10 +145,12 @@ export default function Dashboard() {
 
       // --- TRAITEMENT DES MAPS EN MÉMOIRE ---
       const classMap: Record<string, string> = {};
-      classes?.forEach(c => { classMap[c.id] = c.name; });
+      (classes as Class[] | null)?.forEach((c: Class) => { 
+        classMap[c.id] = c.name; 
+      });
 
-      const studentMap: Record<string, { fullName: string, className: string }> = {};
-      students?.forEach(s => {
+      const studentMap: Record<string, StudentInfo> = {};
+      (students as Student[] | null)?.forEach((s: Student) => {
         studentMap[s.id] = {
           fullName: `${s.first_name || ''} ${s.last_name || ''}`.trim() || 'Élève Sans Nom',
           className: classMap[s.class_id] || 'Sans classe'
@@ -82,13 +158,13 @@ export default function Dashboard() {
       });
 
       // Calculs financiers globaux
-      const expected = students?.reduce((acc: number, s: any) => acc + Number(s.scolarite_totale || 0), 0) || 0;
-      const collected = students?.reduce((acc: number, s: any) => acc + Number(s.scolarite_payee || 0), 0) || 0;
-      const totalExp = expenses?.reduce((acc: number, e: any) => acc + Number(e.amount || 0), 0) || 0;
+      const expected = (students as Student[] | null)?.reduce((acc: number, s: Student) => acc + Number(s.scolarite_totale || 0), 0) || 0;
+      const collected = (students as Student[] | null)?.reduce((acc: number, s: Student) => acc + Number(s.scolarite_payee || 0), 0) || 0;
+      const totalExp = (expenses as Expense[] | null)?.reduce((acc: number, e: Expense) => acc + Number(e.amount || 0), 0) || 0;
 
       // Top 4 des impayés critiques
-      const debtors = (students || [])
-        .map((s: any) => {
+      const debtors = ((students as Student[] | null) || [])
+        .map((s: Student) => {
           const debt = Number(s.scolarite_totale || 0) - Number(s.scolarite_payee || 0);
           return {
             id: s.id,
@@ -97,18 +173,18 @@ export default function Dashboard() {
             debt: debt
           };
         })
-        .filter((s: any) => s.debt > 0)
-        .sort((a: any, b: any) => b.debt - a.debt)
+        .filter((s: Debtor) => s.debt > 0)
+        .sort((a: Debtor, b: Debtor) => b.debt - a.debt)
         .slice(0, 4);
 
       // Répartition des effectifs par classe
-      const distribution = (classes || []).map((c: any) => {
-        const count = (students || []).filter((s: any) => s.class_id === c.id).length;
+      const distribution = ((classes as Class[] | null) || []).map((c: Class) => {
+        const count = ((students as Student[] | null) || []).filter((s: Student) => s.class_id === c.id).length;
         return { name: c.name, count };
       });
 
       // Formatage des flux récents
-      const enrichedPayments = (payments || []).slice(0, 4).map((p: any) => ({
+      const enrichedPayments = ((payments as Payment[] | null) || []).slice(0, 4).map((p: Payment) => ({
         id: p.id,
         amount: p.amount,
         created_at: p.created_at,
@@ -117,7 +193,7 @@ export default function Dashboard() {
       }));
 
       // Formatage incidents disciplinaires
-      const enrichedIncidents = (discipline || []).map((d: any) => ({
+      const enrichedIncidents = ((discipline as DisciplineRecord[] | null) || []).map((d: DisciplineRecord) => ({
         id: d.id,
         reason: d.reason,
         severity: d.severity,
@@ -126,15 +202,15 @@ export default function Dashboard() {
       }));
 
       setStats({
-        totalStudents: students?.length || 0,
-        totalClasses: classes?.length || 0,
+        totalStudents: (students as Student[] | null)?.length || 0,
+        totalClasses: (classes as Class[] | null)?.length || 0,
         totalTeachers: teacherCount || 0,
         totalCollected: collected,
         totalExpected: expected,
         totalExpenses: totalExp
       });
       setRecentPayments(enrichedPayments);
-      setCriticalDebtors(debtors);
+      setCriticalDebtors(debtors as Debtor[]);
       setClassDistribution(distribution);
       setRecentIncidents(enrichedIncidents);
 
@@ -344,7 +420,7 @@ export default function Dashboard() {
   );
 }
 
-function StatCard({ title, value, icon, color }: any) {
+function StatCard({ title, value, icon, color }: StatCardProps) {
   return (
     <div className="bg-white p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-100 shadow-sm flex items-center gap-4 transition-all">
       <div className={`h-11 w-11 sm:h-12 sm:w-12 ${color} text-white rounded-xl flex items-center justify-center shadow-md shrink-0`}>
